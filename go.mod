@@ -23,6 +23,7 @@ require (
 	github.com/microcosm-cc/bluemonday v1.0.4 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
+	github.com/muesli/combinator v0.3.0
 	github.com/muesli/reflow v0.2.0 // indirect
 	github.com/muesli/termenv v0.7.4 // indirect
 	github.com/pelletier/go-toml v1.8.1
@@ -41,6 +42,7 @@ require (
 	github.com/yuin/goldmark v1.2.1 // indirect
 	github.com/zalando/go-keyring v0.1.0
 	go.etcd.io/bbolt v1.3.5
+	go.uber.org/multierr v1.1.0
 	golang.org/x/crypto v0.0.0-20201112155050-0c6587e931a9
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
@@ -49,5 +51,6 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0
+	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 	howett.net/plist v0.0.0-20201026045517-117a925f2150
 )
