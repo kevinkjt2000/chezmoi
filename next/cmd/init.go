@@ -23,6 +23,44 @@ type initCmdConfig struct {
 	apply bool
 }
 
+var dotfilesRepoGuesses = []struct {
+	regexp *regexp.Regexp
+	format string
+}{
+	{
+		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+\z`),
+		format: "https://github.com/%s/dotfiles.git",
+	},
+	{
+		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
+		format: "https://github.com/%s",
+	},
+	{
+		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		format: "https://github.com/%s.git",
+	},
+	{
+		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		format: "https://%s/dotfiles.git",
+	},
+	{
+		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		format: "https://%s.git",
+	},
+	{
+		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
+		format: "https://%s",
+	},
+	{
+		regexp: regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+\z`),
+		format: "https://git.%s/dotfiles",
+	},
+	{
+		regexp: regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		format: "https://git.%s",
+	},
+}
+
 func (c *Config) newInitCmd() *cobra.Command {
 	initCmd := &cobra.Command{
 		Args:    cobra.MaximumNArgs(1),
@@ -205,16 +243,12 @@ func (c *Config) promptString(field string) string {
 	return strings.TrimSpace(value)
 }
 
-// guessDotfilesRepo guesses the user's dotfile repo from argStr.
-func guessDotfilesRepo(argStr string) string {
-	switch {
-	case regexp.MustCompile(`\A[^/]+\z`).MatchString(argStr):
-		return "https://github.com/" + argStr + "/dotfiles.git"
-	case regexp.MustCompile(`\A[^/]+/[^/]+\.git\z`).MatchString(argStr):
-		return "https://github.com/" + argStr
-	case regexp.MustCompile(`\A[^/]+/[^/]+\z`).MatchString(argStr):
-		return "https://github.com/" + argStr + ".git"
-	default:
-		return argStr
+// guessDotfilesRepo guesses the user's dotfile repo from arg.
+func guessDotfilesRepo(arg string) string {
+	for _, dotfileRepoGuess := range dotfilesRepoGuesses {
+		if dotfileRepoGuess.regexp.MatchString(arg) {
+			return fmt.Sprintf(dotfileRepoGuess.format, arg)
+		}
 	}
+	return arg
 }
