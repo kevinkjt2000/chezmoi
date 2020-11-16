@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var needShellQuoteRegexp = regexp.MustCompile(`[^+\-./0-9=A-Z_a-z]`)
+var needShellQuoteRx = regexp.MustCompile(`[^+\-./0-9=A-Z_a-z]`)
 
 const (
 	backslash   = '\\'
@@ -17,7 +17,7 @@ func maybeShellQuote(s string) string {
 	switch {
 	case s == "":
 		return "''"
-	case needShellQuoteRegexp.MatchString(s):
+	case needShellQuoteRx.MatchString(s):
 		result := make([]byte, 0, 2+len(s))
 		inSingleQuotes := false
 		for _, b := range []byte(s) {

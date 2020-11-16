@@ -47,12 +47,12 @@ var checkResultStr = map[checkResult]string{
 // A binaryCheck checks that a binary called name is installed and optionally at
 // least version minVersion.
 type binaryCheck struct {
-	name          string
-	binaryname    string
-	ifNotExist    checkResult
-	versionArgs   []string
-	versionRegexp *regexp.Regexp
-	minVersion    *semver.Version
+	name        string
+	binaryname  string
+	ifNotExist  checkResult
+	versionArgs []string
+	versionRx   *regexp.Regexp
+	minVersion  *semver.Version
 }
 
 // A dirCheck checks that a directory exists.
@@ -133,11 +133,11 @@ func (c *Config) runDoctorCmd(cmd *cobra.Command, args []string) error {
 			binaryname: editor,
 		},
 		&binaryCheck{
-			name:          "git-cli",
-			binaryname:    c.Git.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"--version"},
-			versionRegexp: regexp.MustCompile(`^git\s+version\s+(\d+\.\d+\.\d+)`),
+			name:        "git-cli",
+			binaryname:  c.Git.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"--version"},
+			versionRx:   regexp.MustCompile(`^git\s+version\s+(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
 			name:       "merge-cli",
@@ -145,39 +145,39 @@ func (c *Config) runDoctorCmd(cmd *cobra.Command, args []string) error {
 			ifNotExist: checkWarning,
 		},
 		&binaryCheck{
-			name:          "gnupg-cli",
-			binaryname:    "gpg",
-			versionArgs:   []string{"--version"},
-			versionRegexp: regexp.MustCompile(`^gpg\s+\(.*?\)\s+(\d+\.\d+\.\d+)`),
+			name:        "gnupg-cli",
+			binaryname:  "gpg",
+			versionArgs: []string{"--version"},
+			versionRx:   regexp.MustCompile(`^gpg\s+\(.*?\)\s+(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
-			name:          "1password-cli",
-			binaryname:    c.Onepassword.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"--version"},
-			versionRegexp: regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
+			name:        "1password-cli",
+			binaryname:  c.Onepassword.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"--version"},
+			versionRx:   regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
-			name:          "bitwarden-cli",
-			binaryname:    c.Bitwarden.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"--version"},
-			versionRegexp: regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
+			name:        "bitwarden-cli",
+			binaryname:  c.Bitwarden.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"--version"},
+			versionRx:   regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
-			name:          "gopass-cli",
-			binaryname:    c.Gopass.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   gopassVersionArgs,
-			versionRegexp: gopassVersionRegexp,
-			minVersion:    &gopassMinVersion,
+			name:        "gopass-cli",
+			binaryname:  c.Gopass.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: gopassVersionArgs,
+			versionRx:   gopassVersionRx,
+			minVersion:  &gopassMinVersion,
 		},
 		&binaryCheck{
-			name:          "keepassxc-cli",
-			binaryname:    c.Keepassxc.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"--version"},
-			versionRegexp: regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
+			name:        "keepassxc-cli",
+			binaryname:  c.Keepassxc.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"--version"},
+			versionRx:   regexp.MustCompile(`^(\d+\.\d+\.\d+)`),
 		},
 		&fileCheck{
 			name:       "keepassxc-db",
@@ -185,26 +185,26 @@ func (c *Config) runDoctorCmd(cmd *cobra.Command, args []string) error {
 			ifNotExist: checkWarning,
 		},
 		&binaryCheck{
-			name:          "lastpass-cli",
-			binaryname:    c.Lastpass.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   lastpassVersionArgs,
-			versionRegexp: lastpassVersionRegexp,
-			minVersion:    &lastpassMinVersion,
+			name:        "lastpass-cli",
+			binaryname:  c.Lastpass.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: lastpassVersionArgs,
+			versionRx:   lastpassVersionRx,
+			minVersion:  &lastpassMinVersion,
 		},
 		&binaryCheck{
-			name:          "pass-cli",
-			binaryname:    c.Pass.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"version"},
-			versionRegexp: regexp.MustCompile(`(?m)=\s*v(\d+\.\d+\.\d+)`),
+			name:        "pass-cli",
+			binaryname:  c.Pass.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"version"},
+			versionRx:   regexp.MustCompile(`(?m)=\s*v(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
-			name:          "vault-cli",
-			binaryname:    c.Vault.Command,
-			ifNotExist:    checkWarning,
-			versionArgs:   []string{"version"},
-			versionRegexp: regexp.MustCompile(`^Vault\s+v(\d+\.\d+\.\d+)`),
+			name:        "vault-cli",
+			binaryname:  c.Vault.Command,
+			ifNotExist:  checkWarning,
+			versionArgs: []string{"version"},
+			versionRx:   regexp.MustCompile(`^Vault\s+v(\d+\.\d+\.\d+)`),
 		},
 		&binaryCheck{
 			name:       "secret-cli",
@@ -259,8 +259,8 @@ func (c *binaryCheck) Run() (checkResult, string) {
 	}
 
 	versionBytes := output
-	if c.versionRegexp != nil {
-		match := c.versionRegexp.FindSubmatch(versionBytes)
+	if c.versionRx != nil {
+		match := c.versionRx.FindSubmatch(versionBytes)
 		if len(match) != 2 {
 			return checkFailed, fmt.Sprintf("found %s, could not parse version from %s", path, versionBytes)
 		}

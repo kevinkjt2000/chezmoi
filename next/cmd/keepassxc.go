@@ -33,7 +33,7 @@ type keepassxcConfig struct {
 }
 
 var (
-	keepassxcPairRegexp                  = regexp.MustCompile(`^([^:]+): (.*)$`)
+	keepassxcPairRx                      = regexp.MustCompile(`^([^:]+): (.*)$`)
 	keepassxcNeedShowProtectedArgVersion = semver.Version{Major: 2, Minor: 5, Patch: 1}
 )
 
@@ -136,7 +136,7 @@ func parseKeyPassXCOutput(output []byte) (map[string]string, error) {
 		if i == 0 {
 			continue
 		}
-		match := keepassxcPairRegexp.FindStringSubmatch(s.Text())
+		match := keepassxcPairRx.FindStringSubmatch(s.Text())
 		if match == nil {
 			return nil, fmt.Errorf("%s: parse error", s.Text())
 		}

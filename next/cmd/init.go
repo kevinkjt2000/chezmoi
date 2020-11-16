@@ -24,39 +24,39 @@ type initCmdConfig struct {
 }
 
 var dotfilesRepoGuesses = []struct {
-	regexp *regexp.Regexp
+	rx     *regexp.Regexp
 	format string
 }{
 	{
-		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\A[-0-9A-Za-z]+\z`),
 		format: "https://github.com/%s/dotfiles.git",
 	},
 	{
-		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
+		rx:     regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
 		format: "https://github.com/%s",
 	},
 	{
-		regexp: regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\A[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
 		format: "https://github.com/%s.git",
 	},
 	{
-		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
 		format: "https://%s/dotfiles.git",
 	},
 	{
-		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
 		format: "https://%s.git",
 	},
 	{
-		regexp: regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
+		rx:     regexp.MustCompile(`\A[-.0-9A-Za-z]+/[-0-9A-Za-z]+/[-0-9A-Za-z]+\.git\z`),
 		format: "https://%s",
 	},
 	{
-		regexp: regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+\z`),
 		format: "https://git.%s/dotfiles",
 	},
 	{
-		regexp: regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
+		rx:     regexp.MustCompile(`\Asr\.ht/~[-0-9A-Za-z]+/[-0-9A-Za-z]+\z`),
 		format: "https://git.%s",
 	},
 }
@@ -246,7 +246,7 @@ func (c *Config) promptString(field string) string {
 // guessDotfilesRepo guesses the user's dotfile repo from arg.
 func guessDotfilesRepo(arg string) string {
 	for _, dotfileRepoGuess := range dotfilesRepoGuesses {
-		if dotfileRepoGuess.regexp.MatchString(arg) {
+		if dotfileRepoGuess.rx.MatchString(arg) {
 			return fmt.Sprintf(dotfileRepoGuess.format, arg)
 		}
 	}

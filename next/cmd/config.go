@@ -127,8 +127,8 @@ var (
 		"URL":  {},
 	}
 
-	identifierRegexp = regexp.MustCompile(`\A[\pL_][\pL\p{Nd}_]*\z`)
-	whitespaceRegexp = regexp.MustCompile(`\s+`)
+	identifierRx = regexp.MustCompile(`\A[\pL_][\pL\p{Nd}_]*\z`)
+	whitespaceRx = regexp.MustCompile(`\s+`)
 
 	assets = make(map[string][]byte)
 )
@@ -488,7 +488,7 @@ func (c *Config) getEditor() (string, []string) {
 
 	// Otherwise, if editor contains spaces, then assume that the first word is
 	// the editor and the rest are arguments.
-	components := whitespaceRegexp.Split(editor, -1)
+	components := whitespaceRx.Split(editor, -1)
 	if len(components) > 1 {
 		if path, err := exec.LookPath(components[0]); err == nil {
 			return path, components[1:]
@@ -961,7 +961,7 @@ func (c *Config) marshal(data interface{}) error {
 }
 
 func (c *Config) validateData() error {
-	return validateKeys(c.Data, identifierRegexp)
+	return validateKeys(c.Data, identifierRx)
 }
 
 func (c *Config) writeOutput(data []byte) error {

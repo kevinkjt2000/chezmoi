@@ -82,9 +82,9 @@ func TestValidateKeys(t *testing.T) {
 		},
 	} {
 		if tc.wantErr {
-			assert.Error(t, validateKeys(tc.data, identifierRegexp))
+			assert.Error(t, validateKeys(tc.data, identifierRx))
 		} else {
-			assert.NoError(t, validateKeys(tc.data, identifierRegexp))
+			assert.NoError(t, validateKeys(tc.data, identifierRx))
 		}
 	}
 }

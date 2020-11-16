@@ -17,10 +17,10 @@ var (
 	// chezmoi uses lpass show --json which was added in
 	// https://github.com/lastpass/lastpass-cli/commit/e5a22e2eeef31ab6c54595616e0f57ca0a1c162d
 	// and the first tag containing that commit is v1.3.0~6.
-	lastpassMinVersion      = semver.Version{Major: 1, Minor: 3, Patch: 0}
-	lastpassParseNoteRegexp = regexp.MustCompile(`\A([ A-Za-z]*):(.*)\z`)
-	lastpassVersionArgs     = []string{"--version"}
-	lastpassVersionRegexp   = regexp.MustCompile(`^LastPass CLI v(\d+\.\d+\.\d+)`)
+	lastpassMinVersion  = semver.Version{Major: 1, Minor: 3, Patch: 0}
+	lastpassParseNoteRx = regexp.MustCompile(`\A([ A-Za-z]*):(.*)\z`)
+	lastpassVersionArgs = []string{"--version"}
+	lastpassVersionRx   = regexp.MustCompile(`^LastPass CLI v(\d+\.\d+\.\d+)`)
 )
 
 type lastpassConfig struct {
@@ -85,7 +85,7 @@ func (c *Config) lastpassVersionCheck() error {
 	if err != nil {
 		return err
 	}
-	m := lastpassVersionRegexp.FindSubmatch(output)
+	m := lastpassVersionRx.FindSubmatch(output)
 	if m == nil {
 		return fmt.Errorf("%s: could not extract version", output)
 	}
@@ -104,7 +104,7 @@ func lastpassParseNote(note string) map[string]string {
 	s := bufio.NewScanner(bytes.NewBufferString(note))
 	key := ""
 	for s.Scan() {
-		if m := lastpassParseNoteRegexp.FindStringSubmatch(s.Text()); m != nil {
+		if m := lastpassParseNoteRx.FindStringSubmatch(s.Text()); m != nil {
 			keyComponents := strings.Split(m[1], " ")
 			firstComponentRunes := []rune(keyComponents[0])
 			firstComponentRunes[0] = unicode.ToLower(firstComponentRunes[0])
