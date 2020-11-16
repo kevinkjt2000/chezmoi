@@ -1,5 +1,7 @@
 package cmd
 
+// FIXME add --binary command to attempt to remove binary
+
 import (
 	"fmt"
 	"os"

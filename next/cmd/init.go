@@ -1,5 +1,10 @@
 package cmd
 
+// FIXME add --purge option to purge chezmoi after init
+// FIXME add --purge-binary or --purge=all to purge chezmoi binary after init
+// FIXME combine above into --ninja option to set up dotfiles and remove all traces that chezmoi was ever there
+// FIXME should ninja be an undocumented command?
+
 import (
 	"bufio"
 	"bytes"
