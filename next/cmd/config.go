@@ -32,7 +32,7 @@ import (
 )
 
 type templateConfig struct {
-	Options []string
+	Options []string `mapstructure:"options"`
 }
 
 // A Config represents a configuration.
@@ -53,14 +53,14 @@ type Config struct {
 	color        bool
 
 	// Global configuration, settable in the config file.
-	SourceDir osPath
-	DestDir   osPath
-	Umask     fileMode
-	Format    string
-	Remove    bool
-	Color     string
-	Data      map[string]interface{}
-	Template  templateConfig
+	SourceDir osPath                 `mapstructure:"sourceDir"`
+	DestDir   osPath                 `mapstructure:"destDir"`
+	Umask     fileMode               `mapstructure:"umask"`
+	Format    string                 `mapstructure:"format"`
+	Remove    bool                   `mapstructure:"remove"`
+	Color     string                 `mapstructure:"color"`
+	Data      map[string]interface{} `mapstructure:"data"`
+	Template  templateConfig         `mapstructure:"template"`
 
 	// Global configuration, not settable in the config file.
 	debug         bool
@@ -72,24 +72,24 @@ type Config struct {
 	templateFuncs template.FuncMap
 
 	// Password manager configurations, settable in the config file.
-	Bitwarden   bitwardenConfig
-	Gopass      gopassConfig
-	Keepassxc   keepassxcConfig
-	Lastpass    lastpassConfig
-	Onepassword onepasswordConfig
-	Pass        passConfig
-	Secret      secretConfig
-	Vault       vaultConfig
+	Bitwarden   bitwardenConfig   `mapstructure:"bitwarden"`
+	Gopass      gopassConfig      `mapstructure:"gopass"`
+	Keepassxc   keepassxcConfig   `mapstructure:"keepassxc"`
+	Lastpass    lastpassConfig    `mapstructure:"lastpass"`
+	Onepassword onepasswordConfig `mapstructure:"onepassword"`
+	Pass        passConfig        `mapstructure:"pass"`
+	Secret      secretConfig      `mapstructure:"secret"`
+	Vault       vaultConfig       `mapstructure:"vault"`
 
 	// Password manager data.
 	keyring keyringData
 
 	// Command configurations, settable in the config file.
-	CD    cdCmdConfig
-	Diff  diffCmdConfig
-	Edit  editCmdConfig
-	Git   gitCmdConfig
-	Merge mergeCmdConfig
+	CD    cdCmdConfig    `mapstructure:"cd"`
+	Diff  diffCmdConfig  `mapstructure:"diff"`
+	Edit  editCmdConfig  `mapstructure:"edit"`
+	Git   gitCmdConfig   `mapstructure:"git"`
+	Merge mergeCmdConfig `mapstructure:"merge"`
 
 	// Command configurations, not settable in the config file.
 	add             addCmdConfig
