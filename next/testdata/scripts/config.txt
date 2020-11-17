@@ -16,7 +16,7 @@ stdout 'sourceDir: /config/source'
 
 # test that flags override config files
 chezmoi data --format=yaml --source=/flag/source
-# stdout 'sourceDir: /flag/source'
+# stdout 'sourceDir: /flag/source' # FIXME
 
 # test that the config file can be set
 chezmoi data --config=$CHEZMOICONFIGDIR/chezmoi2.toml --format=yaml
@@ -24,7 +24,7 @@ stdout 'sourceDir: /config2/source'
 
 # test that flags override set config files
 chezmoi data --config=$CHEZMOICONFIGDIR/chezmoi2.toml --format=yaml --source=/flag/source
-# stdout 'sourceDir: /flag/source'
+# stdout 'sourceDir: /flag/source' # FIXME
 
 -- home2/user/.config/chezmoi/chezmoi.toml --
 sourceDir = "/config/source"

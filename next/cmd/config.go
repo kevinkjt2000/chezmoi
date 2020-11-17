@@ -45,7 +45,6 @@ type Config struct {
 	bds *xdg.BaseDirectorySpecification
 
 	configFile   string
-	err          error
 	fs           vfs.FS
 	baseSystem   chezmoi.System
 	sourceSystem chezmoi.System
@@ -717,27 +716,6 @@ func (c *Config) newRootCmd() (*cobra.Command, error) {
 		}
 	}
 
-	// FIXME this shouldn't be global
-	// FIXME move it to c.persistentPreRunRootE
-	cobra.OnInitialize(func() {
-		v := viper.New()
-		v.SetConfigFile(c.configFile)
-		err := v.ReadInConfig()
-		if os.IsNotExist(err) {
-			return
-		}
-		c.err = err
-		if c.err == nil {
-			c.err = v.Unmarshal(c)
-		}
-		if c.err == nil {
-			c.err = c.validateData()
-		}
-		if c.err != nil {
-			rootCmd.Printf("warning: %s: %v\n", c.configFile, c.err)
-		}
-	})
-
 	rootCmd.SetHelpCommand(c.newHelpCmd())
 	for _, newCmdFunc := range []func() *cobra.Command{
 		c.newAddCmd,
@@ -777,6 +755,23 @@ func (c *Config) newRootCmd() (*cobra.Command, error) {
 }
 
 func (c *Config) persistentPreRunRootE(cmd *cobra.Command, args []string) error {
+	v := viper.New()
+	v.SetConfigFile(c.configFile)
+	configErr := v.ReadInConfig()
+	if os.IsNotExist(configErr) {
+		configErr = nil
+	} else {
+		if configErr == nil {
+			configErr = v.Unmarshal(c)
+		}
+		if configErr == nil {
+			configErr = c.validateData()
+		}
+	}
+	if configErr != nil {
+		cmd.Printf("warning: %s: %v\n", c.configFile, configErr)
+	}
+
 	if c.Color == "auto" {
 		if _, ok := os.LookupEnv("NO_COLOR"); ok {
 			c.color = false
@@ -837,7 +832,7 @@ func (c *Config) persistentPreRunRootE(cmd *cobra.Command, args []string) error 
 	}
 
 	if !getBoolAnnotation(cmd, doesNotRequireValidConfig) {
-		if c.err != nil {
+		if configErr != nil {
 			return errors.New("invalid config, aborting")
 		}
 	}
