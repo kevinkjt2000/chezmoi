@@ -1,0 +1,40 @@
+mkhomedir golden
+[!windows] chmod 755 golden/git
+mkhomedir
+
+# install fake git
+cp golden/git golden/git.cmd bin
+
+! chezmoi init
+chezmoi init --use-builtin-git
+exists $CHEZMOISOURCEDIR/.git
+
+[short] stop
+
+# disable fake git
+rm bin/git bin/git.cmd
+
+[!exec:git] stop
+
+# create a commit
+cp golden/.bashrc $CHEZMOISOURCEDIR/dot_bashrc
+chezmoi git add dot_bashrc
+chezmoi git commit -- --message 'Add dot_bashrc'
+
+# restore fake git
+cp golden/git golden/git.cmd bin
+
+# test chezmoi init --use-builtin-git
+chhome home2/user
+! chezmoi init file://$WORK/home/user/.local/share/chezmoi
+chezmoi init --use-builtin-git file://$WORK/home/user/.local/share/chezmoi
+exists $CHEZMOISOURCEDIR/.git
+cmp $CHEZMOISOURCEDIR/dot_bashrc golden/.bashrc
+
+-- golden/git --
+#!/bin/sh
+
+exit 1
+-- golden/git.cmd --
+@echo off
+exit /b 1

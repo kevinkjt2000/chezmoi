@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGuessDotfilesRepo(t *testing.T) {
+func TestGuessDotfilesRepoURL(t *testing.T) {
 	for argStr, expected := range map[string]string{
 		"git@github.com:user/dotfiles.git": "git@github.com:user/dotfiles.git",
 		"gitlab.com/user":                  "https://gitlab.com/user/dotfiles.git",
@@ -19,6 +19,6 @@ func TestGuessDotfilesRepo(t *testing.T) {
 		"user/dots":                        "https://github.com/user/dots.git",
 		"user/dots.git":                    "https://github.com/user/dots.git",
 	} {
-		assert.Equal(t, expected, guessDotfilesRepo(argStr))
+		assert.Equal(t, expected, guessDotfilesRepoURL(argStr))
 	}
 }

@@ -17,6 +17,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/go-git/go-git/v5"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/twpayne/go-vfs"
@@ -25,7 +26,9 @@ import (
 )
 
 type initCmdConfig struct {
-	apply bool
+	apply         bool
+	depth         int
+	useBuiltinGit bool
 }
 
 var dotfilesRepoGuesses = []struct {
@@ -82,13 +85,24 @@ func (c *Config) newInitCmd() *cobra.Command {
 	}
 
 	persistentFlags := initCmd.PersistentFlags()
-	persistentFlags.BoolVar(&c.init.apply, "apply", c.init.apply, "update destination directory")
+	persistentFlags.BoolVarP(&c.init.apply, "apply", "a", c.init.apply, "update destination directory")
+	persistentFlags.IntVarP(&c.init.depth, "depth", "d", c.init.depth, "create a shallow clone")
+	persistentFlags.BoolVarP(&c.init.useBuiltinGit, "use-builtin-git", "b", c.init.useBuiltinGit, "use builtin git")
 
 	return initCmd
 }
 
 func (c *Config) runInitCmd(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
+		if c.init.useBuiltinGit {
+			rawSourceDir, err := c.baseSystem.RawPath(c.absSourceDir)
+			if err != nil {
+				return err
+			}
+			isBare := false
+			_, err = git.PlainInit(rawSourceDir, isBare)
+			return err
+		}
 		return c.run(c.absSourceDir, c.Git.Command, []string{"init"})
 	}
 
@@ -103,27 +117,33 @@ func (c *Config) runInitCmd(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		dotfilesRepo := guessDotfilesRepo(args[0])
-		if err := c.run("", c.Git.Command, []string{"clone", dotfilesRepo, rawSourceDir}); err != nil {
-			return err
-		}
-
-		// Initialize and update submodules.
-		_, err = c.baseSystem.Stat(path.Join(c.absSourceDir, ".gitmodules"))
-		switch {
-		case err == nil:
-			for _, args := range [][]string{
-				{"submodule", "init"},
-				{"submodule", "update"},
-			} {
-				if err := c.run(c.absSourceDir, c.Git.Command, args); err != nil {
-					return err
-				}
+		dotfilesRepoURL := guessDotfilesRepoURL(args[0])
+		if c.init.useBuiltinGit {
+			isBare := false
+			if _, err := git.PlainClone(rawSourceDir, isBare, &git.CloneOptions{
+				URL:               dotfilesRepoURL,
+				Depth:             c.init.depth,
+				RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
+			}); err != nil {
+				return err
 			}
-		case os.IsNotExist(err):
-			// Do nothing.
-		default:
-			return err
+		} else {
+			args := []string{
+				"clone",
+				"--recurse-submodules",
+			}
+			if c.init.depth != 0 {
+				args = append(args,
+					"--depth", strconv.Itoa(c.init.depth),
+				)
+			}
+			args = append(args,
+				dotfilesRepoURL,
+				rawSourceDir,
+			)
+			if err := c.run("", c.Git.Command, args); err != nil {
+				return err
+			}
 		}
 	default:
 		return err
@@ -248,8 +268,8 @@ func (c *Config) promptString(field string) string {
 	return strings.TrimSpace(value)
 }
 
-// guessDotfilesRepo guesses the user's dotfile repo from arg.
-func guessDotfilesRepo(arg string) string {
+// guessDotfilesRepoURL guesses the user's dotfile repo from arg.
+func guessDotfilesRepoURL(arg string) string {
 	for _, dotfileRepoGuess := range dotfilesRepoGuesses {
 		if dotfileRepoGuess.rx.MatchString(arg) {
 			return fmt.Sprintf(dotfileRepoGuess.format, arg)
