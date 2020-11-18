@@ -1,6 +1,6 @@
 package cmd
 
-// FIXME add --purge-binary or --purge=all to purge chezmoi binary after init
+// FIXME ./chezmoi2 init twpayne -S ~/foo --depth 1 --purge doesn't work
 // FIXME combine above into --ninja option to set up dotfiles and remove all traces that chezmoi was ever there
 // FIXME should ninja be an undocumented command?
 
@@ -28,6 +28,7 @@ type initCmdConfig struct {
 	apply         bool
 	depth         int
 	purge         bool
+	purgeBinary   bool
 	useBuiltinGit bool
 }
 
@@ -89,6 +90,7 @@ func (c *Config) newInitCmd() *cobra.Command {
 	persistentFlags.IntVar(&c.init.depth, "depth", c.init.depth, "create a shallow clone")
 	persistentFlags.BoolVar(&c.init.useBuiltinGit, "use-builtin-git", c.init.useBuiltinGit, "use builtin git")
 	persistentFlags.BoolVarP(&c.init.purge, "purge", "p", c.init.purge, "purge config and source directories")
+	persistentFlags.BoolVar(&c.init.purgeBinary, "purge-binary", c.init.purgeBinary, "purge chezmoi binary")
 
 	return initCmd
 }
@@ -185,7 +187,9 @@ func (c *Config) runInitCmd(cmd *cobra.Command, args []string) error {
 
 	// Purge.
 	if c.init.purge {
-		if err := c.purge(); err != nil {
+		if err := c.doPurge(&purgeOptions{
+			binary: c.init.purgeBinary,
+		}); err != nil {
 			return err
 		}
 	}

@@ -1,10 +1,12 @@
 package cmd
 
-// FIXME add --binary command to attempt to remove binary
-
 import (
 	"github.com/spf13/cobra"
 )
+
+type purgeCmdConfig struct {
+	binary bool
+}
 
 func (c *Config) newPurgeCmd() *cobra.Command {
 	purgeCmd := &cobra.Command{
@@ -18,9 +20,15 @@ func (c *Config) newPurgeCmd() *cobra.Command {
 			modifiesSourceDirectory: "true",
 		},
 	}
+
+	persistentFlags := purgeCmd.PersistentFlags()
+	persistentFlags.BoolVar(&c.purge.binary, "binary", c.purge.binary, "purge chezmoi executable")
+
 	return purgeCmd
 }
 
 func (c *Config) runPurgeCmd(cmd *cobra.Command, args []string) error {
-	return c.purge()
+	return c.doPurge(&purgeOptions{
+		binary: c.purge.binary,
+	})
 }
