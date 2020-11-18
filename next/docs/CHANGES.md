@@ -18,10 +18,12 @@ General:
 - order for `merge` is now dest, target, source
 - No more `--prompt` to `chezmoi edit`
 - `--keep-going` global
-- `chezmoi init` guesses your repo if you use github.com and dotfiles
+- `chezmoi init` guesses your repo URL if you use github.com and dotfiles
 - `edit.command` and `edit.args` settable in config file, overrides `$EDITOR` / `$VISUAL`
 - state data has changed, `run_once_` scripts will be run again
 - `run_once_` scripts with same content but different names will only be run once
+- `init` gets `--use-builtin-git` and `--depth`
+- `update` gets `--use-builtin-git` (no rebase)
 
 Config file:
 - rename `sourceVCS` to `git`

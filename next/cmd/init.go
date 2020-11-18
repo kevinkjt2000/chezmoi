@@ -86,8 +86,8 @@ func (c *Config) newInitCmd() *cobra.Command {
 
 	persistentFlags := initCmd.PersistentFlags()
 	persistentFlags.BoolVarP(&c.init.apply, "apply", "a", c.init.apply, "update destination directory")
-	persistentFlags.IntVarP(&c.init.depth, "depth", "d", c.init.depth, "create a shallow clone")
-	persistentFlags.BoolVarP(&c.init.useBuiltinGit, "use-builtin-git", "b", c.init.useBuiltinGit, "use builtin git")
+	persistentFlags.IntVar(&c.init.depth, "depth", c.init.depth, "create a shallow clone")
+	persistentFlags.BoolVar(&c.init.useBuiltinGit, "use-builtin-git", c.init.useBuiltinGit, "use builtin git")
 
 	return initCmd
 }
