@@ -26,8 +26,17 @@ chezmoi init --apply file://$WORK/home/user/.local/share/chezmoi
 exists $CHEZMOISOURCEDIR/.git
 cmp $HOME/.bashrc golden/.bashrc
 
+# test that chezmoi init --apply --depth 1 --force --purge clones, applies, and purges
+chhome home4/user
+exists $CHEZMOICONFIGDIR
+! exists $CHEZMOISOURCEDIR
+chezmoi init --apply --depth 1 --force --purge file://$WORK/home/user/.local/share/chezmoi
+cmp $HOME/.bashrc golden/.bashrc
+! exists $CHEZMOICONFIGDIR
+! exists $CHEZMOISOURCEDIR
+
 # test that chezmoi init does not clone the repo if it is already checked out but does create the config file
-chhome home4${/}user
+chhome home5/user
 chezmoi init --source=$HOME/dotfiles file://$WORK/nonexistentrepo
 exists $CHEZMOICONFIGDIR/chezmoi.toml
 
@@ -37,7 +46,8 @@ exists $CHEZMOICONFIGDIR/chezmoi.toml
 -- home3/user/.gitconfig --
 [core]
   autocrlf = false
--- home4/user/dotfiles/.git/.keep --
--- home4/user/dotfiles/.chezmoi.toml.tmpl --
+-- home4/user/.config/chezmoi/chezmoi.toml --
+-- home5/user/dotfiles/.git/.keep --
+-- home5/user/dotfiles/.chezmoi.toml.tmpl --
 [data]
   email = "user@home.org"

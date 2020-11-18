@@ -22,7 +22,7 @@ General:
 - `edit.command` and `edit.args` settable in config file, overrides `$EDITOR` / `$VISUAL`
 - state data has changed, `run_once_` scripts will be run again
 - `run_once_` scripts with same content but different names will only be run once
-- `init` gets `--use-builtin-git` and `--depth`
+- `init` gets `--use-builtin-git` and `--depth` and `--purge`
 - `update` gets `--use-builtin-git` (no rebase)
 
 Config file:

@@ -1,6 +1,5 @@
 package cmd
 
-// FIXME add --purge option to purge chezmoi after init
 // FIXME add --purge-binary or --purge=all to purge chezmoi binary after init
 // FIXME combine above into --ninja option to set up dotfiles and remove all traces that chezmoi was ever there
 // FIXME should ninja be an undocumented command?
@@ -28,6 +27,7 @@ import (
 type initCmdConfig struct {
 	apply         bool
 	depth         int
+	purge         bool
 	useBuiltinGit bool
 }
 
@@ -88,6 +88,7 @@ func (c *Config) newInitCmd() *cobra.Command {
 	persistentFlags.BoolVarP(&c.init.apply, "apply", "a", c.init.apply, "update destination directory")
 	persistentFlags.IntVar(&c.init.depth, "depth", c.init.depth, "create a shallow clone")
 	persistentFlags.BoolVar(&c.init.useBuiltinGit, "use-builtin-git", c.init.useBuiltinGit, "use builtin git")
+	persistentFlags.BoolVarP(&c.init.purge, "purge", "p", c.init.purge, "purge config and source directories")
 
 	return initCmd
 }
@@ -162,11 +163,6 @@ func (c *Config) runInitCmd(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// If --apply is not specified, we're done.
-	if !c.init.apply {
-		return nil
-	}
-
 	// Reload config if it was created.
 	if filename != "" {
 		viper.SetConfigType(ext)
@@ -179,7 +175,22 @@ func (c *Config) runInitCmd(cmd *cobra.Command, args []string) error {
 	}
 
 	// Apply.
-	return c.applyArgs(c.destSystem, c.absDestDir, nil, chezmoi.NewIncludeSet(chezmoi.IncludeAll), true, c.Umask.FileMode())
+	if c.init.apply {
+		var args []string
+		recursive := false
+		if err := c.applyArgs(c.destSystem, c.absDestDir, args, chezmoi.NewIncludeSet(chezmoi.IncludeAll), recursive, c.Umask.FileMode()); err != nil {
+			return err
+		}
+	}
+
+	// Purge.
+	if c.init.purge {
+		if err := c.purge(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // createConfigFile creates a config file using a template and returns its
