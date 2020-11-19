@@ -14,7 +14,6 @@ General:
 - `encrypt` -> `encrypted` in chattr
 - `--format` now global, don't use toml for dump
 - `y`, `yes`, `on`, `n`, `no`, `off` recognized as bools
-- added `promptBool`, `promptInt` functions to `chezmoi init`
 - order for `merge` is now dest, target, source
 - No more `--prompt` to `chezmoi edit`
 - `--keep-going` global

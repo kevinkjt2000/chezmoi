@@ -62,7 +62,7 @@ func isWellKnownAbbreviation(word string) bool {
 // parseBool is like strconv.ParseBool but also accepts on, ON, y, Y, yes, YES,
 // n, N, no, NO, off, and OFF.
 func parseBool(str string) (bool, error) {
-	switch strings.ToLower(str) {
+	switch strings.ToLower(strings.TrimSpace(str)) {
 	case "n", "no", "off":
 		return false, nil
 	case "on", "y", "yes":
