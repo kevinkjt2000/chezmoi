@@ -11,7 +11,7 @@ type purgeCmdConfig struct {
 func (c *Config) newPurgeCmd() *cobra.Command {
 	purgeCmd := &cobra.Command{
 		Use:     "purge",
-		Short:   "Purge all of chezmoi's configuration and data",
+		Short:   "Purge chezmoi's configuration and data",
 		Long:    mustGetLongHelp("purge"),
 		Example: getExample("purge"),
 		Args:    cobra.NoArgs,

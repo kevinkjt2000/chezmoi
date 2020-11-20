@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"path"
 	"path/filepath"
 	"regexp"
 	"runtime"
@@ -360,21 +361,12 @@ func (c *Config) cmdOutput(dir, name string, args []string) ([]byte, error) {
 }
 
 func (c *Config) doPurge(purgeOptions *purgeOptions) error {
-	// Build a list of chezmoi-related paths.
-	var paths []string
-	for _, dirs := range [][]string{
-		c.bds.ConfigDirs,
-		c.bds.DataDirs,
-	} {
-		for _, dir := range dirs {
-			paths = append(paths, filepath.Join(dir, "chezmoi"))
-		}
-	}
-	paths = append(paths,
+	paths := []string{
+		path.Dir(c.configFile),
 		c.configFile,
 		c.getPersistentStateFile(),
 		c.absSourceDir,
-	)
+	}
 	if purgeOptions != nil && purgeOptions.binary {
 		executable, err := os.Executable()
 		if err == nil {
