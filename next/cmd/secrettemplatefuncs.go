@@ -16,7 +16,7 @@ type secretConfig struct {
 	jsonCache map[string]interface{}
 }
 
-func (c *Config) secretFunc(args ...string) string {
+func (c *Config) secretTemplateFunc(args ...string) string {
 	key := strings.Join(args, "\x00")
 	if value, ok := c.Secret.cache[key]; ok {
 		return value
@@ -37,7 +37,7 @@ func (c *Config) secretFunc(args ...string) string {
 	return value
 }
 
-func (c *Config) secretJSONFunc(args ...string) interface{} {
+func (c *Config) secretJSONTemplateFunc(args ...string) interface{} {
 	key := strings.Join(args, "\x00")
 	if value, ok := c.Secret.jsonCache[key]; ok {
 		return value

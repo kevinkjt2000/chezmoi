@@ -41,7 +41,7 @@ func (c *Config) lastpassOutput(args ...string) ([]byte, error) {
 	return output, nil
 }
 
-func (c *Config) lastpassRawFunc(id string) []map[string]interface{} {
+func (c *Config) lastpassRawTemplateFunc(id string) []map[string]interface{} {
 	if !c.Lastpass.versionOK {
 		if err := c.lastpassVersionCheck(); err != nil {
 			panic(err)
@@ -70,8 +70,8 @@ func (c *Config) lastpassRawFunc(id string) []map[string]interface{} {
 	return data
 }
 
-func (c *Config) lastpassFunc(id string) []map[string]interface{} {
-	data := c.lastpassRawFunc(id)
+func (c *Config) lastpassTemplateFunc(id string) []map[string]interface{} {
+	data := c.lastpassRawTemplateFunc(id)
 	for _, d := range data {
 		if note, ok := d["note"].(string); ok {
 			d["note"] = lastpassParseNote(note)

@@ -13,7 +13,7 @@ type vaultConfig struct {
 	cache   map[string]interface{}
 }
 
-func (c *Config) vaultFunc(key string) interface{} {
+func (c *Config) vaultTemplateFunc(key string) interface{} {
 	if data, ok := c.Vault.cache[key]; ok {
 		return data
 	}

@@ -13,7 +13,7 @@ type passConfig struct {
 	cache   map[string]string
 }
 
-func (c *Config) passFunc(id string) string {
+func (c *Config) passTemplateFunc(id string) string {
 	if s, ok := c.Pass.cache[id]; ok {
 		return s
 	}

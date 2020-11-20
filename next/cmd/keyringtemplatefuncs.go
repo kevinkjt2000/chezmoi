@@ -15,7 +15,7 @@ type keyringData struct {
 	cache map[keyringKey]string
 }
 
-func (c *Config) keyringFunc(service, user string) string {
+func (c *Config) keyringTemplateFunc(service, user string) string {
 	key := keyringKey{
 		service: service,
 		user:    user,

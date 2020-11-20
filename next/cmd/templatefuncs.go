@@ -16,7 +16,7 @@ type ioregData struct {
 	value map[string]interface{}
 }
 
-func (c *Config) includeFunc(filename string) string {
+func (c *Config) includeTemplateFunc(filename string) string {
 	contents, err := c.fs.ReadFile(path.Join(c.absSourceDir, filename))
 	if err != nil {
 		panic(err)
@@ -24,7 +24,7 @@ func (c *Config) includeFunc(filename string) string {
 	return string(contents)
 }
 
-func (c *Config) ioregFunc() map[string]interface{} {
+func (c *Config) ioregTemplateFunc() map[string]interface{} {
 	if runtime.GOOS != "darwin" {
 		return nil
 	}
@@ -47,11 +47,11 @@ func (c *Config) ioregFunc() map[string]interface{} {
 	return value
 }
 
-func (c *Config) joinPathFunc(elem ...string) string {
+func (c *Config) joinPathTemplateFunc(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
-func (c *Config) lookPathFunc(file string) string {
+func (c *Config) lookPathTemplateFunc(file string) string {
 	path, err := exec.LookPath(file)
 	switch {
 	case err == nil:
@@ -63,7 +63,7 @@ func (c *Config) lookPathFunc(file string) string {
 	}
 }
 
-func (c *Config) statFunc(name string) interface{} {
+func (c *Config) statTemplateFunc(name string) interface{} {
 	info, err := c.fs.Stat(name)
 	switch {
 	case err == nil:

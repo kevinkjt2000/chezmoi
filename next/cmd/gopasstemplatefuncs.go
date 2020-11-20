@@ -38,7 +38,7 @@ func (c *Config) gopassOutput(args ...string) ([]byte, error) {
 	return output, nil
 }
 
-func (c *Config) gopassFunc(id string) string {
+func (c *Config) gopassTemplateFunc(id string) string {
 	if !c.Gopass.versionOK {
 		if err := c.gopassVersionCheck(); err != nil {
 			panic(err)

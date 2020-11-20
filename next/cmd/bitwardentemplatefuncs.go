@@ -37,7 +37,7 @@ func (c *Config) bitwardenOutput(args []string) []byte {
 	return output
 }
 
-func (c *Config) bitwardenFunc(args ...string) map[string]interface{} {
+func (c *Config) bitwardenTemplateFunc(args ...string) map[string]interface{} {
 	output := c.bitwardenOutput(args)
 	var data map[string]interface{}
 	if err := json.Unmarshal(output, &data); err != nil {
@@ -46,7 +46,7 @@ func (c *Config) bitwardenFunc(args ...string) map[string]interface{} {
 	return data
 }
 
-func (c *Config) bitwardenFieldsFunc(args ...string) map[string]interface{} {
+func (c *Config) bitwardenFieldsTemplateFunc(args ...string) map[string]interface{} {
 	output := c.bitwardenOutput(args)
 	var data struct {
 		Fields []map[string]interface{} `json:"fields"`

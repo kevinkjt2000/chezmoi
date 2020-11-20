@@ -55,7 +55,7 @@ func (c *Config) getKeepassxcVersion() *semver.Version {
 	return c.Keepassxc.version
 }
 
-func (c *Config) keepassxcFunc(entry string) map[string]string {
+func (c *Config) keepassxcTemplateFunc(entry string) map[string]string {
 	if data, ok := c.Keepassxc.cache[entry]; ok {
 		return data
 	}
@@ -84,7 +84,7 @@ func (c *Config) keepassxcFunc(entry string) map[string]string {
 	return data
 }
 
-func (c *Config) keepassxcAttributeFunc(entry, attribute string) string {
+func (c *Config) keepassxcAttributeTemplateFunc(entry, attribute string) string {
 	key := keepassxcAttributeCacheKey{
 		entry:     entry,
 		attribute: attribute,

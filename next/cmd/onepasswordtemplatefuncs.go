@@ -36,7 +36,7 @@ func (c *Config) onepasswordOutput(args []string) []byte {
 	return output
 }
 
-func (c *Config) onepasswordFunc(args ...string) map[string]interface{} {
+func (c *Config) onepasswordTemplateFunc(args ...string) map[string]interface{} {
 	key, vault := onepasswordGetKeyAndVault(args)
 	onepasswordArgs := []string{"get", "item", key}
 	if vault != "" {
@@ -50,7 +50,7 @@ func (c *Config) onepasswordFunc(args ...string) map[string]interface{} {
 	return data
 }
 
-func (c *Config) onepasswordDocumentFunc(args ...string) string {
+func (c *Config) onepasswordDocumentTemplateFunc(args ...string) string {
 	key, vault := onepasswordGetKeyAndVault(args)
 	onepasswordArgs := []string{"get", "document", key}
 	if vault != "" {
@@ -60,7 +60,7 @@ func (c *Config) onepasswordDocumentFunc(args ...string) string {
 	return string(output)
 }
 
-func (c *Config) onepasswordDetailsFieldsFunc(args ...string) map[string]interface{} {
+func (c *Config) onepasswordDetailsFieldsTemplateFunc(args ...string) map[string]interface{} {
 	key, vault := onepasswordGetKeyAndVault(args)
 	onepasswordArgs := []string{"get", "item", key}
 	if vault != "" {
