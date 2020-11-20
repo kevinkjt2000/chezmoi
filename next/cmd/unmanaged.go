@@ -19,6 +19,7 @@ func (c *Config) newUnmanagedCmd() *cobra.Command {
 		Args:    cobra.NoArgs,
 		RunE:    c.makeRunEWithSourceState(c.runUnmanagedCmd),
 	}
+
 	return unmanagedCmd
 }
 

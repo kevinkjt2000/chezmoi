@@ -96,6 +96,7 @@ func (c *Config) newDoctorCmd() *cobra.Command {
 			runsCommands:              "true",
 		},
 	}
+
 	return doctorCmd
 }
 

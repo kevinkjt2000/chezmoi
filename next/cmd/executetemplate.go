@@ -26,11 +26,11 @@ func (c *Config) newExecuteTemplateCmd() *cobra.Command {
 		RunE:    c.makeRunEWithSourceState(c.runExecuteTemplateCmd),
 	}
 
-	persistentFlags := executeTemplateCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.executeTemplate.init, "init", "i", c.executeTemplate.init, "simulate chezmoi init")
-	persistentFlags.StringToStringVar(&c.executeTemplate.promptBool, "promptBool", c.executeTemplate.promptBool, "simulate promptBool")
-	persistentFlags.StringToIntVar(&c.executeTemplate.promptInt, "promptInt", c.executeTemplate.promptInt, "simulate promptInt")
-	persistentFlags.StringToStringVarP(&c.executeTemplate.promptString, "promptString", "p", c.executeTemplate.promptString, "simulate promptString")
+	flags := executeTemplateCmd.Flags()
+	flags.BoolVarP(&c.executeTemplate.init, "init", "i", c.executeTemplate.init, "simulate chezmoi init")
+	flags.StringToStringVar(&c.executeTemplate.promptBool, "promptBool", c.executeTemplate.promptBool, "simulate promptBool")
+	flags.StringToIntVar(&c.executeTemplate.promptInt, "promptInt", c.executeTemplate.promptInt, "simulate promptInt")
+	flags.StringToStringVarP(&c.executeTemplate.promptString, "promptString", "p", c.executeTemplate.promptString, "simulate promptString")
 
 	return executeTemplateCmd
 }

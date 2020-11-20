@@ -23,9 +23,9 @@ func (c *Config) newApplyCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := applyCmd.PersistentFlags()
-	persistentFlags.VarP(c.apply.include, "include", "i", "include entry types")
-	persistentFlags.BoolVarP(&c.apply.recursive, "recursive", "r", c.apply.recursive, "recursive")
+	flags := applyCmd.Flags()
+	flags.VarP(c.apply.include, "include", "i", "include entry types")
+	flags.BoolVarP(&c.apply.recursive, "recursive", "r", c.apply.recursive, "recursive")
 
 	return applyCmd
 }

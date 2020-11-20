@@ -31,13 +31,13 @@ func (c *Config) newAddCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := addCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.add.autoTemplate, "autotemplate", "a", c.add.autoTemplate, "auto generate the template when adding files as templates")
-	persistentFlags.BoolVarP(&c.add.empty, "empty", "e", c.add.empty, "add empty files")
-	persistentFlags.BoolVar(&c.add.encrypt, "encrypt", c.add.encrypt, "encrypt files")
-	persistentFlags.BoolVarP(&c.add.exact, "exact", "x", c.add.exact, "add directories exactly")
-	persistentFlags.BoolVarP(&c.add.recursive, "recursive", "r", c.add.recursive, "recursive")
-	persistentFlags.BoolVarP(&c.add.template, "template", "T", c.add.template, "add files as templates")
+	flags := addCmd.Flags()
+	flags.BoolVarP(&c.add.autoTemplate, "autotemplate", "a", c.add.autoTemplate, "auto generate the template when adding files as templates")
+	flags.BoolVarP(&c.add.empty, "empty", "e", c.add.empty, "add empty files")
+	flags.BoolVar(&c.add.encrypt, "encrypt", c.add.encrypt, "encrypt files")
+	flags.BoolVarP(&c.add.exact, "exact", "x", c.add.exact, "add directories exactly")
+	flags.BoolVarP(&c.add.recursive, "recursive", "r", c.add.recursive, "recursive")
+	flags.BoolVarP(&c.add.template, "template", "T", c.add.template, "add files as templates")
 
 	return addCmd
 }

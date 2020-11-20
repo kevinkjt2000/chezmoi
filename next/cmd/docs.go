@@ -25,6 +25,7 @@ func (c *Config) newDocsCmd() *cobra.Command {
 			doesNotRequireValidConfig: "true",
 		},
 	}
+
 	return docsCmd
 }
 

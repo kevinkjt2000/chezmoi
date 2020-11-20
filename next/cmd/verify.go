@@ -20,9 +20,9 @@ func (c *Config) newVerifyCmd() *cobra.Command {
 		RunE:    c.runVerifyCmd,
 	}
 
-	persistentFlags := verifyCmd.PersistentFlags()
-	persistentFlags.VarP(c.verify.include, "include", "i", "include entry types")
-	persistentFlags.BoolVarP(&c.verify.recursive, "recursive", "r", c.verify.recursive, "recursive")
+	flags := verifyCmd.Flags()
+	flags.VarP(c.verify.include, "include", "i", "include entry types")
+	flags.BoolVarP(&c.verify.recursive, "recursive", "r", c.verify.recursive, "recursive")
 
 	return verifyCmd
 }

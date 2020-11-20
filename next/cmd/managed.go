@@ -25,8 +25,8 @@ func (c *Config) newManagedCmd() *cobra.Command {
 		RunE:    c.makeRunEWithSourceState(c.runManagedCmd),
 	}
 
-	persistentFlags := managedCmd.PersistentFlags()
-	persistentFlags.VarP(c.managed.include, "include", "i", "include entry types")
+	flags := managedCmd.Flags()
+	flags.VarP(c.managed.include, "include", "i", "include entry types")
 
 	return managedCmd
 }

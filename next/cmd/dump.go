@@ -22,9 +22,9 @@ func (c *Config) newDumpCmd() *cobra.Command {
 		RunE:    c.runDumpCmd,
 	}
 
-	persistentFlags := dumpCmd.PersistentFlags()
-	persistentFlags.VarP(c.dump.include, "include", "i", "include entry types")
-	persistentFlags.BoolVarP(&c.dump.recursive, "recursive", "r", c.dump.recursive, "recursive")
+	flags := dumpCmd.Flags()
+	flags.VarP(c.dump.include, "include", "i", "include entry types")
+	flags.BoolVarP(&c.dump.recursive, "recursive", "r", c.dump.recursive, "recursive")
 
 	return dumpCmd
 }

@@ -29,10 +29,10 @@ func (c *Config) newArchiveCmd() *cobra.Command {
 		RunE:    c.runArchiveCmd,
 	}
 
-	persistentFlags := archiveCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.archive.gzip, "gzip", "z", c.archive.gzip, "compress the output with gzip")
-	persistentFlags.VarP(c.archive.include, "include", "i", "include entry types")
-	persistentFlags.BoolVarP(&c.archive.recursive, "recursive", "r", c.archive.recursive, "recursive")
+	flags := archiveCmd.Flags()
+	flags.BoolVarP(&c.archive.gzip, "gzip", "z", c.archive.gzip, "compress the output with gzip")
+	flags.VarP(c.archive.include, "include", "i", "include entry types")
+	flags.BoolVarP(&c.archive.recursive, "recursive", "r", c.archive.recursive, "recursive")
 
 	return archiveCmd
 }

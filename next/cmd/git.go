@@ -23,6 +23,7 @@ func (c *Config) newGitCmd() *cobra.Command {
 			runsCommands:            "true",
 		},
 	}
+
 	return gitCmd
 }
 

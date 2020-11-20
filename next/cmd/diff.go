@@ -24,10 +24,10 @@ func (c *Config) newDiffCmd() *cobra.Command {
 		RunE:    c.runDiffCmd,
 	}
 
-	persistentFlags := diffCmd.PersistentFlags()
-	persistentFlags.VarP(c.Diff.include, "include", "i", "include entry types")
-	persistentFlags.BoolVar(&c.Diff.NoPager, "no-pager", c.Diff.NoPager, "disable pager")
-	persistentFlags.BoolVarP(&c.Diff.recursive, "recursive", "r", c.Diff.recursive, "recursive")
+	flags := diffCmd.Flags()
+	flags.VarP(c.Diff.include, "include", "i", "include entry types")
+	flags.BoolVar(&c.Diff.NoPager, "no-pager", c.Diff.NoPager, "disable pager")
+	flags.BoolVarP(&c.Diff.recursive, "recursive", "r", c.Diff.recursive, "recursive")
 
 	return diffCmd
 }

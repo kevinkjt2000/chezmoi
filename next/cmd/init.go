@@ -86,12 +86,12 @@ func (c *Config) newInitCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := initCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.init.apply, "apply", "a", c.init.apply, "update destination directory")
-	persistentFlags.IntVarP(&c.init.depth, "depth", "d", c.init.depth, "create a shallow clone")
-	persistentFlags.BoolVarP(&c.init.useBuiltinGit, "use-builtin-git", "b", c.init.useBuiltinGit, "use builtin git")
-	persistentFlags.BoolVarP(&c.init.purge, "purge", "p", c.init.purge, "purge config and source directories")
-	persistentFlags.BoolVarP(&c.init.purgeBinary, "purge-binary", "P", c.init.purgeBinary, "purge chezmoi binary")
+	flags := initCmd.Flags()
+	flags.BoolVarP(&c.init.apply, "apply", "a", c.init.apply, "update destination directory")
+	flags.IntVarP(&c.init.depth, "depth", "d", c.init.depth, "create a shallow clone")
+	flags.BoolVarP(&c.init.useBuiltinGit, "use-builtin-git", "b", c.init.useBuiltinGit, "use builtin git")
+	flags.BoolVarP(&c.init.purge, "purge", "p", c.init.purge, "purge config and source directories")
+	flags.BoolVarP(&c.init.purgeBinary, "purge-binary", "P", c.init.purgeBinary, "purge chezmoi binary")
 
 	return initCmd
 }

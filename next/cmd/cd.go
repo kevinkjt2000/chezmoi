@@ -24,6 +24,7 @@ func (c *Config) newCDCmd() *cobra.Command {
 			runsCommands:              "true",
 		},
 	}
+
 	return cdCmd
 }
 

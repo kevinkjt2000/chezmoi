@@ -31,11 +31,11 @@ func (c *Config) newUpdateCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := updateCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.update.apply, "apply", "a", c.update.apply, "apply after pulling")
-	persistentFlags.VarP(c.update.include, "include", "i", "include entry types")
-	persistentFlags.BoolVarP(&c.update.recursive, "recursive", "r", c.update.recursive, "recursive")
-	persistentFlags.BoolVar(&c.update.useBuiltinGit, "use-builtin-git", c.update.useBuiltinGit, "use builtin git")
+	flags := updateCmd.Flags()
+	flags.BoolVarP(&c.update.apply, "apply", "a", c.update.apply, "apply after pulling")
+	flags.VarP(c.update.include, "include", "i", "include entry types")
+	flags.BoolVarP(&c.update.recursive, "recursive", "r", c.update.recursive, "recursive")
+	flags.BoolVar(&c.update.useBuiltinGit, "use-builtin-git", c.update.useBuiltinGit, "use builtin git")
 
 	return updateCmd
 }

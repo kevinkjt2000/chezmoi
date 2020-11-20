@@ -29,8 +29,8 @@ func (c *Config) newEditCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := editCmd.PersistentFlags()
-	persistentFlags.BoolVarP(&c.Edit.apply, "apply", "a", c.Edit.apply, "apply edit after editing")
+	flags := editCmd.Flags()
+	flags.BoolVarP(&c.Edit.apply, "apply", "a", c.Edit.apply, "apply edit after editing")
 
 	return editCmd
 }

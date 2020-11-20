@@ -18,6 +18,7 @@ func (c *Config) newEditConfigCmd() *cobra.Command {
 			runsCommands:            "true",
 		},
 	}
+
 	return editConfigCmd
 }
 

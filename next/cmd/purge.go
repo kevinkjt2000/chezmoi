@@ -21,8 +21,8 @@ func (c *Config) newPurgeCmd() *cobra.Command {
 		},
 	}
 
-	persistentFlags := purgeCmd.PersistentFlags()
-	persistentFlags.BoolVar(&c.purge.binary, "binary", c.purge.binary, "purge chezmoi executable")
+	flags := purgeCmd.Flags()
+	flags.BoolVarP(&c.purge.binary, "binary", "P", c.purge.binary, "purge chezmoi executable")
 
 	return purgeCmd
 }

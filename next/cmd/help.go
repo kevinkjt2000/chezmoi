@@ -15,6 +15,7 @@ func (c *Config) newHelpCmd() *cobra.Command {
 		Example: getExample("help"),
 		RunE:    c.runHelpCmd,
 	}
+
 	return helpCmd
 }
 

@@ -15,6 +15,7 @@ func (c *Config) newDataCmd() *cobra.Command {
 		Args:    cobra.NoArgs,
 		RunE:    c.makeRunEWithSourceState(c.runDataCmd),
 	}
+
 	return dataCmd
 }
 
