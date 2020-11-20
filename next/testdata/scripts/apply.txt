@@ -48,3 +48,7 @@ cmp $HOME/.gitconfig golden/.gitconfig
 cmp $HOME/.hushlogin golden/.hushlogin
 cmp $HOME/.ssh/config golden/.ssh/config
 cmp $HOME/.symlink golden/.bashrc
+
+# test apply after edit
+edit $CHEZMOISOURCEDIR/dot_bashrc
+chezmoi apply
