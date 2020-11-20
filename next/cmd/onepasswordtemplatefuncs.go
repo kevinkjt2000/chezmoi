@@ -26,7 +26,7 @@ func (c *Config) onepasswordOutput(args []string) []byte {
 	cmd.Stderr = c.stderr
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 
 	if c.Onepassword.outputCache == nil {
@@ -45,7 +45,7 @@ func (c *Config) onepasswordTemplateFunc(args ...string) map[string]interface{} 
 	output := c.onepasswordOutput(onepasswordArgs)
 	var data map[string]interface{}
 	if err := json.Unmarshal(output, &data); err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", c.Onepassword.Command, chezmoi.ShellQuoteArgs(onepasswordArgs), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", c.Onepassword.Command, chezmoi.ShellQuoteArgs(onepasswordArgs), err, output))
 	}
 	return data
 }
@@ -73,7 +73,7 @@ func (c *Config) onepasswordDetailsFieldsTemplateFunc(args ...string) map[string
 		} `json:"details"`
 	}
 	if err := json.Unmarshal(output, &data); err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", c.Onepassword.Command, chezmoi.ShellQuoteArgs(onepasswordArgs), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", c.Onepassword.Command, chezmoi.ShellQuoteArgs(onepasswordArgs), err, output))
 	}
 	result := make(map[string]interface{})
 	for _, field := range data.Details.Fields {
@@ -91,6 +91,7 @@ func onepasswordGetKeyAndVault(args []string) (string, string) {
 	case 2:
 		return args[0], args[1]
 	default:
-		panic(fmt.Sprintf("expected 1 or 2 arguments, got %d", len(args)))
+		returnTemplateError(fmt.Errorf("expected 1 or 2 arguments, got %d", len(args)))
+		return "", ""
 	}
 }

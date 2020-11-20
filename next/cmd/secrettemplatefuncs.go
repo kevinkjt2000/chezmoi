@@ -27,7 +27,7 @@ func (c *Config) secretTemplateFunc(args ...string) string {
 	cmd.Stderr = c.stderr
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 	value := string(bytes.TrimSpace(output))
 	if c.Secret.cache == nil {
@@ -48,11 +48,11 @@ func (c *Config) secretJSONTemplateFunc(args ...string) interface{} {
 	cmd.Stderr = c.stderr
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 	var value interface{}
 	if err := json.Unmarshal(output, &value); err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 	if c.Secret.jsonCache == nil {
 		c.Secret.jsonCache = make(map[string]interface{})

@@ -44,7 +44,7 @@ func (c *Config) lastpassOutput(args ...string) ([]byte, error) {
 func (c *Config) lastpassRawTemplateFunc(id string) []map[string]interface{} {
 	if !c.Lastpass.versionOK {
 		if err := c.lastpassVersionCheck(); err != nil {
-			panic(err)
+			returnTemplateError(err)
 		}
 		c.Lastpass.versionOK = true
 	}
@@ -55,12 +55,12 @@ func (c *Config) lastpassRawTemplateFunc(id string) []map[string]interface{} {
 
 	output, err := c.lastpassOutput("show", "--json", id)
 	if err != nil {
-		panic(err)
+		returnTemplateError(err)
 	}
 
 	var data []map[string]interface{}
 	if err := json.Unmarshal(output, &data); err != nil {
-		panic(fmt.Errorf("%s: parse error: %w", output, err))
+		returnTemplateError(fmt.Errorf("%s: parse error: %w", output, err))
 	}
 
 	if c.Lastpass.cache == nil {
@@ -116,7 +116,7 @@ func lastpassParseNote(note string) map[string]string {
 		}
 	}
 	if err := s.Err(); err != nil {
-		panic(err)
+		returnTemplateError(err)
 	}
 	return result
 }

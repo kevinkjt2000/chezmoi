@@ -41,7 +41,7 @@ func (c *Config) gopassOutput(args ...string) ([]byte, error) {
 func (c *Config) gopassTemplateFunc(id string) string {
 	if !c.Gopass.versionOK {
 		if err := c.gopassVersionCheck(); err != nil {
-			panic(err)
+			returnTemplateError(err)
 		}
 		c.Gopass.versionOK = true
 	}
@@ -53,7 +53,7 @@ func (c *Config) gopassTemplateFunc(id string) string {
 	args := []string{"show", "--password", id}
 	output, err := c.gopassOutput("show", "--password", id)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w", c.Gopass.Command, chezmoi.ShellQuoteArgs(args), err))
+		returnTemplateError(fmt.Errorf("%s %s: %w", c.Gopass.Command, chezmoi.ShellQuoteArgs(args), err))
 	}
 
 	var password string

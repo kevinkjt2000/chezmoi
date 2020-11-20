@@ -19,7 +19,7 @@ type ioregData struct {
 func (c *Config) includeTemplateFunc(filename string) string {
 	contents, err := c.fs.ReadFile(path.Join(c.absSourceDir, filename))
 	if err != nil {
-		panic(err)
+		returnTemplateError(err)
 	}
 	return string(contents)
 }
@@ -36,12 +36,12 @@ func (c *Config) ioregTemplateFunc() map[string]interface{} {
 	cmd := exec.Command("ioreg", "-a", "-l")
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("ioreg: %w", err))
+		returnTemplateError(fmt.Errorf("ioreg: %w", err))
 	}
 
 	var value map[string]interface{}
 	if _, err := plist.Unmarshal(output, &value); err != nil {
-		panic(fmt.Errorf("ioreg: %w", err))
+		returnTemplateError(fmt.Errorf("ioreg: %w", err))
 	}
 	c.ioregData.value = value
 	return value
@@ -59,7 +59,8 @@ func (c *Config) lookPathTemplateFunc(file string) string {
 	case errors.Is(err, exec.ErrNotFound):
 		return ""
 	default:
-		panic(err)
+		returnTemplateError(err)
+		return ""
 	}
 }
 
@@ -78,6 +79,11 @@ func (c *Config) statTemplateFunc(name string) interface{} {
 	case os.IsNotExist(err):
 		return nil
 	default:
-		panic(err)
+		returnTemplateError(err)
+		return nil
 	}
+}
+
+func returnTemplateError(err error) {
+	panic(err)
 }

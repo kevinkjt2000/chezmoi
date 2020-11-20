@@ -46,11 +46,11 @@ func (c *Config) getKeepassxcVersion() *semver.Version {
 	cmd := exec.Command(name, args...)
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
+		returnTemplateError(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
 	}
 	c.Keepassxc.version, err = semver.NewVersion(string(bytes.TrimSpace(output)))
 	if err != nil {
-		panic(fmt.Errorf("cannot parse version %q: %w", output, err))
+		returnTemplateError(fmt.Errorf("cannot parse version %q: %w", output, err))
 	}
 	return c.Keepassxc.version
 }
@@ -60,7 +60,7 @@ func (c *Config) keepassxcTemplateFunc(entry string) map[string]string {
 		return data
 	}
 	if c.Keepassxc.Database == "" {
-		panic(errors.New("keepassxc.database not set"))
+		returnTemplateError(errors.New("keepassxc.database not set"))
 	}
 	name := c.Keepassxc.Command
 	args := []string{"show"}
@@ -71,11 +71,11 @@ func (c *Config) keepassxcTemplateFunc(entry string) map[string]string {
 	args = append(args, c.Keepassxc.Database, entry)
 	output, err := c.runKeepassxcCLICommand(name, args)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
+		returnTemplateError(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
 	}
 	data, err := parseKeyPassXCOutput(output)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
+		returnTemplateError(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
 	}
 	if c.Keepassxc.cache == nil {
 		c.Keepassxc.cache = make(map[string]map[string]string)
@@ -93,7 +93,7 @@ func (c *Config) keepassxcAttributeTemplateFunc(entry, attribute string) string 
 		return data
 	}
 	if c.Keepassxc.Database == "" {
-		panic(errors.New("keepassxc.database not set"))
+		returnTemplateError(errors.New("keepassxc.database not set"))
 	}
 	name := c.Keepassxc.Command
 	args := []string{"show", "--attributes", attribute, "--quiet"}
@@ -104,7 +104,7 @@ func (c *Config) keepassxcAttributeTemplateFunc(entry, attribute string) string 
 	args = append(args, c.Keepassxc.Database, entry)
 	output, err := c.runKeepassxcCLICommand(name, args)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
+		returnTemplateError(fmt.Errorf("%s %s: %w", name, chezmoi.ShellQuoteArgs(args), err))
 	}
 	outputStr := strings.TrimSpace(string(output))
 	if c.Keepassxc.attributeCache == nil {

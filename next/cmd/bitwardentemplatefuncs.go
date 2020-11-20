@@ -27,7 +27,7 @@ func (c *Config) bitwardenOutput(args []string) []byte {
 	cmd.Stderr = c.stderr
 	output, err := c.baseSystem.IdempotentCmdOutput(cmd)
 	if err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", name, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 
 	if c.Bitwarden.outputCache == nil {
@@ -41,7 +41,7 @@ func (c *Config) bitwardenTemplateFunc(args ...string) map[string]interface{} {
 	output := c.bitwardenOutput(args)
 	var data map[string]interface{}
 	if err := json.Unmarshal(output, &data); err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", c.Bitwarden.Command, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", c.Bitwarden.Command, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 	return data
 }
@@ -52,7 +52,7 @@ func (c *Config) bitwardenFieldsTemplateFunc(args ...string) map[string]interfac
 		Fields []map[string]interface{} `json:"fields"`
 	}
 	if err := json.Unmarshal(output, &data); err != nil {
-		panic(fmt.Errorf("%s %s: %w\n%s", c.Bitwarden.Command, chezmoi.ShellQuoteArgs(args), err, output))
+		returnTemplateError(fmt.Errorf("%s %s: %w\n%s", c.Bitwarden.Command, chezmoi.ShellQuoteArgs(args), err, output))
 	}
 	result := make(map[string]interface{})
 	for _, field := range data.Fields {
