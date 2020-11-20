@@ -15,11 +15,11 @@ func TestIncludeMaskSet(t *testing.T) {
 	}{
 		{
 			s:        "",
-			expected: NewIncludeSet(IncludeNone),
+			expected: NewIncludeSet(includeNone),
 		},
 		{
 			s:        "none",
-			expected: NewIncludeSet(IncludeNone),
+			expected: NewIncludeSet(includeNone),
 		},
 		{
 			s:        "dirs,files",
@@ -47,7 +47,7 @@ func TestIncludeMaskSet(t *testing.T) {
 		},
 	} {
 		t.Run(tc.s, func(t *testing.T) {
-			actual := NewIncludeSet(IncludeNone)
+			actual := NewIncludeSet(includeNone)
 			err := actual.Set(tc.s)
 			if tc.expectedErr {
 				require.Error(t, err)
@@ -89,7 +89,7 @@ func TestIncludeMaskStringSlice(t *testing.T) {
 			expected: "symlinks",
 		},
 		{
-			bits:     IncludeNone,
+			bits:     includeNone,
 			expected: "none",
 		},
 		{

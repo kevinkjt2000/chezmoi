@@ -4,6 +4,8 @@ import (
 	"crypto/sha256"
 )
 
+// A contentsFunc is a function that returns the contents of a file or an error.
+// It is typically used for lazy evaluation of a file's contents.
 type contentsFunc func() ([]byte, error)
 
 // A lazyContents evaluates its contents lazily.
@@ -14,6 +16,8 @@ type lazyContents struct {
 	contentsSHA256 []byte
 }
 
+// A linknameFunc is a function that returns the target of a symlink or an
+// error. It is typically used for lazy evaluation of a symlink's target.
 type linknameFunc func() (string, error)
 
 // A lazyLinkname evaluates its linkname lazily.
@@ -95,6 +99,7 @@ func (ll *lazyLinkname) LinknameSHA256() ([]byte, error) {
 	return ll.linknameSHA256, nil
 }
 
+// sha256Sum returns the SHA256 sum of data.
 func sha256Sum(data []byte) []byte {
 	sha256SumArr := sha256.Sum256(data)
 	return sha256SumArr[:]

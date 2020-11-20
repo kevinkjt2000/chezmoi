@@ -29,7 +29,8 @@ type DestStateFile struct {
 	*lazyContents
 }
 
-// A DestStateSymlink represents the state of a symlink in the destination state.
+// A DestStateSymlink represents the state of a symlink in the destination
+// state.
 type DestStateSymlink struct {
 	path string
 	*lazyLinkname

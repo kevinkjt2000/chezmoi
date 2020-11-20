@@ -597,6 +597,8 @@ func (s *SourceState) TemplateData() map[string]interface{} {
 	return s.templateData
 }
 
+// addPatterns executes the template at sourcePath, interprets the result as a
+// list of patterns, and adds all patterns found to patternSet.
 func (s *SourceState) addPatterns(patternSet *patternSet, sourcePath, relPath string) error {
 	data, err := s.executeTemplate(sourcePath)
 	if err != nil {
@@ -713,6 +715,7 @@ func (s *SourceState) applyAll(targetSystem System, targetDir string, options Ap
 	return nil
 }
 
+// executeTemplate executes the template at path and returns the result.
 func (s *SourceState) executeTemplate(path string) ([]byte, error) {
 	data, err := s.system.ReadFile(path)
 	if err != nil {
@@ -721,6 +724,7 @@ func (s *SourceState) executeTemplate(path string) ([]byte, error) {
 	return s.ExecuteTemplateData(path, data)
 }
 
+// newSourceStateDir FIXME
 func (s *SourceState) newSourceStateDir(sourcePath string, da DirAttributes) *SourceStateDir {
 	targetStateDir := &TargetStateDir{
 		perm: da.perm(),
@@ -732,6 +736,7 @@ func (s *SourceState) newSourceStateDir(sourcePath string, da DirAttributes) *So
 	}
 }
 
+// newSourceStateFile FIXME
 func (s *SourceState) newSourceStateFile(sourcePath string, fa FileAttributes, targetName string) *SourceStateFile {
 	lazyContents := &lazyContents{
 		contentsFunc: func() ([]byte, error) {
@@ -831,6 +836,7 @@ func (s *SourceState) newSourceStateFile(sourcePath string, fa FileAttributes, t
 	}
 }
 
+// sourceStateEntry FIXME
 func (s *SourceState) sourceStateEntry(destStateEntry DestStateEntry, destPath string, info os.FileInfo, parentDir string, options *AddOptions) (SourceStateEntry, error) {
 	// FIXME IAMHERE need to generate EntryState and update status if needed
 	switch destStateEntry := destStateEntry.(type) {

@@ -29,8 +29,8 @@ const (
 	// IncludeAll is all include bits.
 	IncludeAll IncludeBits = IncludeAbsent | IncludeDirs | IncludeFiles | IncludeScripts | IncludeSymlinks
 
-	// IncludeNone is no include bits.
-	IncludeNone IncludeBits = 0
+	// includeNone is no include bits.
+	includeNone IncludeBits = 0
 )
 
 // includeBits is a map from human-readable strings to IncludeBits.
@@ -107,7 +107,7 @@ func (s *IncludeSet) IncludeTargetStateEntry(targetStateEntry TargetStateEntry) 
 // Set implements github.com/spf13/pflag.Value.Set.
 func (s *IncludeSet) Set(str string) error {
 	if str == "none" {
-		s.bits = IncludeNone
+		s.bits = includeNone
 		return nil
 	}
 
@@ -140,7 +140,7 @@ func (s *IncludeSet) String() string {
 	switch s.bits {
 	case IncludeAll:
 		return "all"
-	case IncludeNone:
+	case includeNone:
 		return "none"
 	}
 	var elements []string
