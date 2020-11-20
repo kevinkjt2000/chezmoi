@@ -7,8 +7,10 @@ import (
 	vfs "github.com/twpayne/go-vfs"
 )
 
+// A dataType is a data type.
 type dataType string
 
+// dataTypes.
 const (
 	dataTypeDir     dataType = "dir"
 	dataTypeFile    dataType = "file"
@@ -23,12 +25,14 @@ type DumpSystem struct {
 	data map[string]interface{}
 }
 
+// A dirData contains data about a directory.
 type dirData struct {
 	Type dataType    `json:"type" toml:"type" yaml:"type"`
 	Name string      `json:"name" toml:"name" yaml:"name"`
 	Perm os.FileMode `json:"perm" toml:"perm" yaml:"perm"`
 }
 
+// A fileData contains data about a file.
 type fileData struct {
 	Type     dataType    `json:"type" toml:"type" yaml:"type"`
 	Name     string      `json:"name" toml:"name" yaml:"name"`
@@ -36,12 +40,14 @@ type fileData struct {
 	Perm     os.FileMode `json:"perm" toml:"perm" yaml:"perm"`
 }
 
+// A scriptData contains data about a script.
 type scriptData struct {
 	Type     dataType `json:"type" toml:"type" yaml:"type"`
 	Name     string   `json:"name" toml:"name" yaml:"name"`
 	Contents string   `json:"contents" toml:"contents" yaml:"contents"`
 }
 
+// A symlinkData contains data about a symlink.
 type symlinkData struct {
 	Type     dataType `json:"type" toml:"type" yaml:"type"`
 	Name     string   `json:"name" toml:"name" yaml:"name"`

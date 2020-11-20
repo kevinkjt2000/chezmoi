@@ -8,12 +8,16 @@ import (
 	"strings"
 )
 
-// Configuration variables.
 var (
 	// DefaultTemplateOptions are the default template options.
 	DefaultTemplateOptions = []string{"missingkey=error"}
 
-	EntryStateBucket      = []byte("entryState")
+	// DestEntryStateBucket is the bucket for recording the state of entries in
+	// the destination state.
+	DestEntryStateBucket = []byte("destEntryState")
+
+	// ScriptOnceStateBucket is the bucket for recording the state of run once
+	// scripts.
 	ScriptOnceStateBucket = []byte("scriptOnce")
 )
 

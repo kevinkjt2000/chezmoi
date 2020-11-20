@@ -1,5 +1,7 @@
 package chezmoi
 
+// FIXME Add IncludeEncrypted
+
 import (
 	"fmt"
 	"os"
@@ -24,10 +26,14 @@ const (
 	IncludeScripts
 	IncludeSymlinks
 
-	IncludeAll              = IncludeAbsent | IncludeDirs | IncludeFiles | IncludeScripts | IncludeSymlinks
+	// IncludeAll is all include bits.
+	IncludeAll IncludeBits = IncludeAbsent | IncludeDirs | IncludeFiles | IncludeScripts | IncludeSymlinks
+
+	// IncludeNone is no include bits.
 	IncludeNone IncludeBits = 0
 )
 
+// includeBits is a map from human-readable strings to IncludeBits.
 var includeBits = map[string]IncludeBits{
 	"a":        IncludeAbsent,
 	"absent":   IncludeAbsent,

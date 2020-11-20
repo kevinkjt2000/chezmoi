@@ -5,6 +5,7 @@ import (
 	vfs "github.com/twpayne/go-vfs"
 )
 
+// A doubleStarOS embeds a vfs.FS into a value that implements doublestar.OS.
 type doubleStarOS struct {
 	vfs.FS
 }
